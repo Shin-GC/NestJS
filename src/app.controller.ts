@@ -1,12 +1,17 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Req, Param, Post } from '@nestjs/common';
 import { AppService } from './app.service';
-
+import { Request } from 'express';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
-
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  // GET 요청 @Param을 사용하여 request.params 값을 받아온다.
+  @Get('')
+  getHello(@Param('id') id: { id: string }): string {
+    return this.appService.getHello(id);
+  }
+  // POST 요청 @Body를 사용하여 request.body 안의 값을 받아온다.
+  @Post('/body')
+  getBody(@Body() user: { name: string }): string {
+    return this.appService.getBody(user);
   }
 }
