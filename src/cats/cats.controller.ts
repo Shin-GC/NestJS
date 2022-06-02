@@ -1,7 +1,14 @@
 import { CatRequestDto } from './dto/cats.request.dto';
 import { SuccessInterceptor } from './../common/interceptors/success.interceptor';
 import { PositiveIntPipe } from './../common/pipes/positiveint.pipe';
-import { Body, Controller, Get, Post, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
 import { CatsService } from './cats.service';
 
 @Controller('cats')
@@ -9,12 +16,12 @@ import { CatsService } from './cats.service';
 export class CatsController {
   constructor(private readonly catService: CatsService) {}
   @Get()
-  getCurrentCat() {
-    return 'current cat';
+  async getCurrentCat(@Query() email: string) {
+    return await this.catService.getCat(email);
   }
 
   @Post()
   async SignUp(@Body() body: CatRequestDto) {
-    return this.catService.signUp(body);
+    return await this.catService.signUp(body);
   }
 }
